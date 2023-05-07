@@ -1,0 +1,25 @@
+name: Rust
+
+on:
+  ## prithoo: We need this script to run just before we push to the `package` branch
+  push:
+    branches: [ "package" ]
+  pull_request:
+    branches: [ "master", "package" ]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build
+      run: |
+        chmod +x scripts/*
+        sh scripts/build.sh debug
+    - name: Run tests
+      run: cargo test --verbose
